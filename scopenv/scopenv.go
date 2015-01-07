@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Scopenv - REDEFINE CREATE : Maybe also return error
+// Scopenv - Main function of this package
 func Scopenv(m []string, v ...string) map[string]string {
 
 	r, _ := reverse(v)
@@ -17,13 +17,18 @@ func Scopenv(m []string, v ...string) map[string]string {
 	return scope
 }
 
+// find - recurively finds and sets up env variables
 func find(s map[string]string, m, rev []string) map[string]string {
 	for i := range m {
+		// Combine prefixes with variables and uppercase them
 		tmp := strings.Join(rev, "_")
 		f := upper(tmp) + "_" + upper(m[i])
+
+		// If there are no more prefixes, remove the leading _
 		if len(rev) == 0 {
 			f = strings.Replace(f, "_", "", 1)
 		}
+		// Get your env vars
 		check := os.Getenv(f)
 		if check == "" {
 			// Check for the length of the slice before removing
@@ -32,8 +37,10 @@ func find(s map[string]string, m, rev []string) map[string]string {
 			}
 			rev = removeFirst(rev)
 
+			// Recursion !!!
 			find(s, m, rev)
 		} else {
+			// Put the env vars in the map
 			s[m[i]] = check
 		}
 	}
@@ -46,7 +53,7 @@ func reverse(v []string) ([]string, int) {
 	var r []string
 	for i := range v {
 		l := v[len(v)-1-i]
-		r = append(r, l) // Suggestion: do `last := len(s)-1` before the loop
+		r = append(r, l)
 
 	}
 	leng := len(r)
