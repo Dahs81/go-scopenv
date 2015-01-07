@@ -22,12 +22,14 @@ func find(s map[string]string, m, rev []string) map[string]string {
 		tmp := strings.Join(rev, "_")
 		f := upper(tmp) + "_" + upper(m[i])
 		if len(rev) == 0 {
-			panic(fmt.Sprintf("Error: you are missing a env variable for one of the values in m."))
+			f = strings.Replace(f, "_", "", 1)
 		}
-		f = strings.Replace(f, "_", "", 1)
-
 		check := os.Getenv(f)
 		if check == "" {
+			// Check for the length of the slice before removing
+			if len(rev) == 0 {
+				panic(fmt.Sprintf("Error: you are missing a env variable for one of the values in m."))
+			}
 			rev = removeFirst(rev)
 
 			find(s, m, rev)
