@@ -49,5 +49,5 @@ test := scopenv.Scopenv(m, "core")
 ##### Output
 
 ```
-map[host:154.234.323.2 token:jf348943jf8934j8489]
+map[host:154.234.323.2 token:jf348943jf8934j84891]
 ```
